@@ -1,0 +1,14 @@
+import string
+
+def alphanumeric(password):
+    
+    characters = list(string.ascii_lowercase + string.ascii_uppercase + string.digits)
+
+    if len(password) == 0:
+        return False
+    
+    for word in password:
+        if word not in characters:
+            return False
+    
+    return True
