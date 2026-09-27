@@ -1,0 +1,111 @@
+dict1={0:"Zero",1:"One",2:"Two",3:"Three",4:"Four",5:"Five",6:"Six",7:"Seven",8:"Eight",9:"Nine"};
+dict3={20:"Twenty",30:"Thirty",40:"Forty",50:"Fifty",60:"Sixty",70:"Seventy",80:"Eighty",90:"Ninety"};
+dict2={10:"Ten",11:"Eleven",12:"Twelve",13:"Thirteen",14:"Fourteen",15:"Fifteen",16:"Sixteen",17:"Seventeen",18:"Eighteen",19:"Nineteen"};
+
+crore=10000000
+lakh=100000
+thousand=1000
+hundred=100
+
+def one_dig(n):
+  if n in dict1:
+    return dict1[n]
+
+    
+def two_dig(n):
+    if n < 10:
+        return dict1[n]
+    if n in dict2:
+        return dict2[n]
+    if n in dict3:
+        return dict3[n]
+    tens = (n // 10) * 10
+    ones = n % 10
+    return dict3[tens] + " " + dict1[ones]
+
+def three_dig(n):
+  if(n<100):
+    return two_dig(n)
+  a=n%100
+  n=n//100
+  s=""
+  s+=str(dict1[n]+" Hundred ")
+  if a==0:
+    return s
+  elif a>0 and a<=9:
+    s+="and "+dict1[a]
+  elif a>=10 and a<=19:
+    s+="and "+dict2[a]
+  elif a in dict3:
+    s+="and "+dict3[a]
+  else:
+    s+="and "+two_dig(a)
+  return s
+
+def find_num(n):
+  flag=0
+  while (n>=100 and flag==0):
+    num=""
+    s=""
+    if n>=crore:
+      cr=n//crore
+      n=n%crore
+      if cr in (dict1,dict2,dict3):
+        for i in (dict1,dict2,dict3):
+          if cr in i:
+            num+=str(str(i[cr])+" Crore ")
+      else:
+        if(len(str(cr))==2):
+          num+=str(str(two_dig(cr))+" Crore ")
+        else:
+          num+=find_num(cr) + " Crore "
+      
+    if n>=lakh:
+      lk=n//lakh
+      n=n%lakh
+      if lk in (dict1,dict2,dict3):
+        for i in (dict1,dict2,dict3):
+          if lk in i:
+            num+=str(str(i[lk])+" Lakh ")
+      else:
+        num+=str(str(two_dig(lk))+" Lakh ")
+
+    if n>=thousand:
+      th=n//thousand
+      n=n%thousand
+      if th in (dict1,dict2,dict3):
+        for i in (dict1,dict2,dict3):
+          if th in i:
+            num+=str(str(i[th])+" Thousand ")
+      else:
+        num+=str(str(two_dig(th))+" Thousand ")
+    if n>=hundred and n<=999:
+      flag=1
+      num+=three_dig(n)
+      return num
+    elif n>0:
+      flag=1
+      num+=two_dig(n)
+      return num
+    else:
+      flag=1
+      return num
+
+
+n=input("Enter a Number : ")
+number=""
+n1=int(n)
+if n1 in dict1:
+  number=dict1[n1]
+elif(len(n)==2):
+  if n1 in dict2:
+    number=dict2[n1]
+  elif n1 in dict3:
+    number=dict3[n1]
+  else:
+    number=two_dig(n1)
+if int(n1)>=100:
+  number=find_num(int(n1))
+
+  
+print(number)
